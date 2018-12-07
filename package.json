@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/sdaitzman/drillTweet/issues"
   },
-  "homepage": "https://github.com/sdaitzman/drillTweet#readme"
+  "homepage": "https://github.com/sdaitzman/drillTweet#readme",
+  "dependencies": {
+    "serialport": "^7.1.0"
+  }
 }
