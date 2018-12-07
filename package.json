@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/sdaitzman/drillTweet#readme",
   "dependencies": {
+    "lodash": "^4.17.11",
     "serialport": "^7.1.0"
   }
 }
