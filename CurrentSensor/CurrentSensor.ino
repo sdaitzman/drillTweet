@@ -1,8 +1,10 @@
 #define samples 80
 
-double total;
-int reading;
+float total;
+float reading;
 float acRMS;
+
+float alpha = 0.9;
 
 void setup() {
   // put your setup code here, to run once:
@@ -15,9 +17,14 @@ void loop() {
   for(int i = 0; i < samples; i++) {
     reading = analogRead(A0) - 512;
     total += reading * reading;
+    if(total < 0) {
+      Serial.print(total);
+      Serial.print("AAAAAAAAAAAA");
+      Serial.println(reading);
+    }
     delayMicroseconds(417);
   }
-  acRMS = sqrt(total/samples);
+  acRMS = acRMS * alpha + (1-alpha)*sqrt(total/samples);
   
   Serial.println(acRMS);
   
