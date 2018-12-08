@@ -7,6 +7,9 @@ const express = require('express')
 
 const package = require('./package.json')
 const app = express()
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+
 let port
 let reading
 
@@ -36,12 +39,18 @@ SerialPort.list((err, ports) => {
 })
 
 app.get('/', (req, res) => {
-  if(port.readable)
-  res.send('Hello world')
+  res.sendFile(__dirname + '/index.html')
 })
 
 app.get('/reading', (req, res) => {
   res.send(String(reading))
 })
 
-app.listen(3000)
+io.on('connection', (socket) => {
+  socket.emit('init', {version: package.version})
+  socket.on('requestReading', (data) => {
+    socket.emit('returnReading', {reading: reading})
+  })
+})
+
+server.listen(80)

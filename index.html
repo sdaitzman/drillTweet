@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Drill!</title>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	<script>
+	  var socket = io.connect('http://localhost')
+		socket.on('init', (data) => {
+			console.log(data)
+			setInterval(() => {
+				socket.emit('requestReading')
+			}, 50)
+		})
+		socket.on('returnReading', (data) =>{
+			console.log(data.reading)
+			chart.data.datasets[0].data.shift()
+			chart.data.datasets[0].data.push(+data.reading)
+			chart.data.datasets[0].data[0] = 3
+			chart.data.datasets[0].data[1] = 0
+			chart.update()
+		})
+	</script>
+</head>
+<body>
+
+
+	<canvas id="myChart"></canvas>
+
+
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var chart = new Chart(ctx, {
+		    // The type of chart we want to create
+		    type: 'line',
+
+		    // The data for our dataset
+		    data: {
+		        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
+		        datasets: [{
+		            label: "My First dataset",
+								pointBackgroundColor: 'rgb(0, 0, 0)',
+		            backgroundColor: 'rgb(255, 99, 132)',
+		            borderColor: 'rgb(255, 99, 132)',
+		            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		        }]
+		    },
+
+		    // Configuration options go here
+		    options: {
+					animation: {
+						duration: 0
+					}
+				}
+		});
+	</script>
+</body>
+</html>
