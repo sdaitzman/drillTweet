@@ -33,7 +33,7 @@ SerialPort.list((err, ports) => {
     console.log('Open connection')
     parser.on('data', (data) => {
       reading = +data
-      console.log(reading)
+      // console.log(reading)
     })
   })
 })
