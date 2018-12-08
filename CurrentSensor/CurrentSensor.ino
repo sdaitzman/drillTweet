@@ -1,15 +1,17 @@
-#define samples 80
+#define samples 120
 
 float total;
 float reading;
 float acRMS;
 
-float alpha = 0.9;
+float alpha = 0.33;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   pinMode(A0, INPUT_PULLUP);
+  pinMode(11, OUTPUT);
+  pinMode(13, OUTPUT);
 }
 
 void loop() {
@@ -17,15 +19,19 @@ void loop() {
   for(int i = 0; i < samples; i++) {
     reading = analogRead(A0) - 512;
     total += reading * reading;
-    if(total < 0) {
-      Serial.print(total);
-      Serial.print("AAAAAAAAAAAA");
-      Serial.println(reading);
-    }
-    delayMicroseconds(417);
+    delayMicroseconds(275);
   }
-  acRMS = acRMS * alpha + (1-alpha)*sqrt(total/samples);
-  
+  acRMS = acRMS * (1-alpha) + alpha * sqrt(total/samples);
+  if(acRMS > 150) {
+    analogWrite(11, 100);
+  } else {
+    analogWrite(11, 0);
+  }
+  if(acRMS > 95) {
+    digitalWrite(13, 100);
+  } else {
+    digitalWrite(13, 0);
+  }
   Serial.println(acRMS);
   
 }
