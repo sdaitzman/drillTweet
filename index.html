@@ -14,23 +14,17 @@
 			}, 50)
 		})
 		socket.on('returnReading', (data) =>{
-			console.log(data.reading)
-			if(data.reading < 1.2) {
-				chart.data.datasets[0].backgroundColor = 'rgb(17, 255, 112)'
-				chart.data.datasets[0].borderColor = 'rgb(17, 255, 112)'
-			}
-			if(data.reading >= 1.2 && data.reading < 2) {
-				chart.data.datasets[0].backgroundColor = 'rgb(255, 170, 50)'
-				chart.data.datasets[0].borderColor = 'rgb(255, 170, 50)'
-			}
-			if(data.reading >= 2) {
-				chart.data.datasets[0].backgroundColor = 'rgb(255, 17, 17)'
-				chart.data.datasets[0].borderColor = 'rgb(255, 17, 17)'
-			}
 			chart.data.datasets[0].data.shift()
 			chart.data.datasets[0].data.push(+data.reading)
 			chart.data.datasets[0].data[0] = 3
 			chart.data.datasets[0].data[1] = 0
+
+			let newHue = 50 * (-data.reading + 2)
+			if(newHue > 150) newHue = 150
+			if(newHue < 0)   newHue = 0
+			console.log(newHue)
+			chart.data.datasets[0].backgroundColor = 'hsl(' + newHue + ', 84%, 54%)'
+			chart.data.datasets[0].borderColor = 'hsl(' + newHue + ', 84%, 54%)'
 			chart.update()
 		})
 	</script>
