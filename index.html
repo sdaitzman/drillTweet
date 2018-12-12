@@ -8,7 +8,7 @@
 	<script>
 	  var socket = io.connect('http://' + window.location.host)
 		socket.on('init', (data) => {
-			console.log(data)
+			// console.log(data)
 			setInterval(() => {
 				socket.emit('requestReading')
 			}, 50)
@@ -22,9 +22,12 @@
 			let newHue = 50 * (-data.reading + 2)
 			if(newHue > 150) newHue = 150
 			if(newHue < 0)   newHue = 0
-			console.log(newHue)
-			chart.data.datasets[0].backgroundColor = 'hsl(' + newHue + ', 84%, 54%)'
-			chart.data.datasets[0].borderColor = 'hsl(' + newHue + ', 84%, 54%)'
+			// console.log(newHue)
+			chart.data.datasets[0].backgroundColor.shift()
+			chart.data.datasets[0].borderColor.shift()
+			chart.data.datasets[0].backgroundColor[0] = 'transparent'
+			chart.data.datasets[0].backgroundColor[49] = 'hsl(' + newHue + ', 84%, 54%)'
+			chart.data.datasets[0].borderColor[49] = 'hsl(' + newHue + ', 84%, 54%)'
 			chart.update()
 		})
 	</script>
@@ -39,7 +42,7 @@
 		var ctx = document.getElementById('myChart').getContext('2d');
 		var chart = new Chart(ctx, {
 		    // The type of chart we want to create
-		    type: 'line',
+		    type: 'bar',
 
 		    // The data for our dataset
 		    data: {
@@ -47,8 +50,8 @@
 		        datasets: [{
 		            label: "Current (A)",
 								pointBackgroundColor: 'rgb(0, 0, 0)',
-		            backgroundColor: 'rgb(255, 170, 50)',
-		            borderColor: 'rgb(255, 170, 50)',
+		            backgroundColor: [],
+		            borderColor: [],
 		            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 		        }]
 		    },
