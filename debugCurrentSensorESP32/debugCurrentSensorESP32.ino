@@ -1,11 +1,11 @@
 void setup() {
   Serial.begin(115200);
-  analogSetCycles(4);
+  analogSetCycles(2);
 }
 
 void loop() {
   Serial.println(ReadVoltage(33),3);
-  delay(random(10));
+  delayMicroseconds(275);
 }
 
 double ReadVoltage(byte pin){
