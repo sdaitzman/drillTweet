@@ -1,9 +1,6 @@
 #include "config.h"
 #include <WiFi.h>
 #include <WebSocketClient.h>
-
-char path[] = "/";
-char host[] = "echo.websocket.org";
   
 WebSocketClient webSocketClient;
 
@@ -74,18 +71,15 @@ void loop() {
     
     // capture the value of analog 1, send it along
     pinMode(1, INPUT);
-    data = String(analogRead(1));
+    data = String(random(100));
     
     webSocketClient.sendData(data);
     
   } else {
     Serial.println("Client disconnected.");
-    while (1) {
-      // Hang on disconnect.
-    }
+//    while (1) {
+//      // Hang on disconnect.
+//    }
   }
-  
-  // wait to fully let the client disconnect
-  delay(3000);
   
 }
