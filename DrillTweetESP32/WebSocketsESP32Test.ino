@@ -113,13 +113,9 @@ void loop() {
         if (current < 0) current = 0;
         webSocketClient.sendData(String(current));
         Serial.println(current);
+        Serial.println(WiFi.macAddress());
       }
     }
-
-    data = String(random(100));
-
-    //    webSocketClient.sendData(data);
-
   } else {
     Serial.println("Disconnected from WebSocket server. Will attempt reconnect in 5 seconds...");
     delay(5000);
