@@ -15,7 +15,7 @@ let port
 let reading
 
 
-const wss = new WebSocket.Server({ port: 80 })
+const wss = new WebSocket.Server({ port: 8080 })
 
 wss.on('connection', function connection(ws) {
   console.log('New Connection')
@@ -51,4 +51,4 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(8080)
+server.listen(80)
