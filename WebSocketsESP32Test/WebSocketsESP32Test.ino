@@ -32,7 +32,7 @@ void setup() {
   Serial.println();
   Serial.println();
   Serial.print("Connecting to ");
-  Serial.println(ssid);
+  Serial.print(ssid);
 
   WiFi.enableSTA(true);
 
@@ -51,7 +51,7 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-  delay(5000);
+  delay(50);
 
 
   // Connect to the websocket server
