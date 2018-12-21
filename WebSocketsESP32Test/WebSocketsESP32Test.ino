@@ -15,6 +15,30 @@ float current;
 
 float alpha = 0.33;
 
+void serverConnect() {
+  // Connect to the websocket server
+  if (client.connect(host, 8080)) {
+    Serial.println("Connected to server. Attempting handshake...");
+    serverHandshake();
+  } else {
+    Serial.println("Connection to server failed. Trying again in 5 seconds...");
+    delay(5000);
+    serverConnect();
+  }
+}
+
+void serverHandshake() {
+  // Handshake with the server
+  webSocketClient.path = path;
+  webSocketClient.host = host;
+  if (webSocketClient.handshake(client)) {
+    Serial.println("Handshake with server successful");
+  } else {
+    Serial.println("Handshake failed. Will try connecting again.");
+    serverConnect();
+  }
+}
+
 void setup() {
   Serial.begin(115200);
   delay(10);
@@ -39,7 +63,7 @@ void setup() {
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
-    if(WiFi.getAutoReconnect()) {
+    if (WiFi.getAutoReconnect()) {
       WiFi.begin();
     }
     delay(500);
@@ -47,34 +71,15 @@ void setup() {
   }
 
   Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
+  Serial.print("WiFi connected with IP address: ");
   Serial.println(WiFi.localIP());
 
   delay(50);
 
+  serverConnect();
 
-  // Connect to the websocket server
-  if (client.connect(host, 8080)) {
-    Serial.println("Connected");
-  } else {
-    Serial.println("Connection failed.");
-    while (1) {
-      // Hang on failure
-    }
-  }
 
-  // Handshake with the server
-  webSocketClient.path = path;
-  webSocketClient.host = host;
-  if (webSocketClient.handshake(client)) {
-    Serial.println("Handshake successful");
-  } else {
-    Serial.println("Handshake failed.");
-    while (1) {
-      // Hang on failure
-    }
-  }
+
 
 }
 
@@ -116,10 +121,9 @@ void loop() {
     //    webSocketClient.sendData(data);
 
   } else {
-    Serial.println("Client disconnected.");
-    //    while (1) {
-    //      // Hang on disconnect.
-    //    }
+    Serial.println("Disconnected from WebSocket server. Will attempt reconnect in 5 seconds...");
+    delay(5000);
+    serverConnect();
   }
 
 }
