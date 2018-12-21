@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const fs = require('fs')
+const WebSocket = require('ws')
 const SerialPort = require('serialport')
 const Readline = SerialPort.parsers.Readline
 const _ = require('lodash')
@@ -13,30 +14,27 @@ const io = require('socket.io')(server)
 let port
 let reading
 
-SerialPort.list((err, ports) => {
-  let chosenPort = ports[0].comName
-  _.forEach(ports, (port) => {
-    if(~_.lowerCase(port.manufacturer).indexOf('arduino')) chosenPort = port
-  })
 
-  console.log('Connecting to ' + chosenPort)
+const wss = new WebSocket.Server({ port: 80 })
 
-  const parser = new Readline('\n')
-  port = new SerialPort(chosenPort.comName, {baudRate: 115200, parser: parser})
+wss.on('connection', function connection(ws) {
+  console.log('New Connection')
+  let refreshLoop = setInterval(() => {
+    if(ws.readyState === WebSocket.OPEN) {
+      ws.send('getReading', (error) => { if(error) console.log(error) })
+    } else {
+      console.log('Trying to send messages to a non-open socket. Clearing this interval.')
+      clearInterval(refreshLoop)
+    }
+  }, 40)
+  ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+    reading = +message
+  });
 
-  port.pipe(parser)
+  ws.send('something');
+});
 
-  port.write('ROBOT PLEASE RESPOND\n')
-
-
-  port.on('open', () => {
-    console.log('Open connection')
-    parser.on('data', (data) => {
-      reading = +data
-      // console.log(reading)
-    })
-  })
-})
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
@@ -53,4 +51,4 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(80)
+server.listen(8080)

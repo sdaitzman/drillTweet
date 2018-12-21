@@ -6,9 +6,14 @@ const wss = new WebSocket.Server({ port: 80 });
 
 wss.on('connection', function connection(ws) {
   console.log('New Connection')
-  setInterval(() => {
-    ws.send('getReading', (error) => { if(error) console.log(error) })
-  }, 200)
+  let refreshLoop = setInterval(() => {
+    if(ws.readyState === WebSocket.OPEN) {
+      ws.send('getReading', (error) => { if(error) console.log(error) })
+    } else {
+      console.log('Trying to send messages to a non-open socket. Clearing this interval.')
+      clearInterval(refreshLoop)
+    }
+  }, 40)
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
   });
