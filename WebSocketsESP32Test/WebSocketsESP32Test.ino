@@ -34,9 +34,14 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
+  WiFi.enableSTA(true);
+
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
+    if(WiFi.getAutoReconnect()) {
+      WiFi.begin();
+    }
     delay(500);
     Serial.print(".");
   }
