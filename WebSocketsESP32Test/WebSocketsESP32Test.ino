@@ -1,8 +1,7 @@
+#include "config.h"
 #include <WiFi.h>
 #include <WebSocketClient.h>
 
-const char* ssid     = "SSID HERE";
-const char* password = "PASSWORD HERE";
 char path[] = "/";
 char host[] = "echo.websocket.org";
   
