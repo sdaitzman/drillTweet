@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// pre-merge commit
 const fs = require('fs')
 const SerialPort = require('serialport')
 const Readline = SerialPort.parsers.Readline
