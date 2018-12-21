@@ -23,7 +23,7 @@ wss.on('connection', function connection(ws) {
     if(ws.readyState === WebSocket.OPEN) {
       ws.send('getReading', (error) => { if(error) console.log(error) })
     } else {
-      console.log('Trying to send messages to a non-open socket. Clearing this interval.')
+      console.log('Trying to send messages to a non-open WebSocket. Clearing this getReading interval. Connection readyState is ' + ws.readyState)
       clearInterval(refreshLoop)
     }
   }, 40)
