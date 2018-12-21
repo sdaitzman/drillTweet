@@ -37,7 +37,7 @@ void setup() {
   
 
   // Connect to the websocket server
-  if (client.connect("echo.websocket.org", 80)) {
+  if (client.connect(host, 80)) {
     Serial.println("Connected");
   } else {
     Serial.println("Connection failed.");
