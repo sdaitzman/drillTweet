@@ -13,7 +13,7 @@ wss.on('connection', function connection(ws) {
       console.log('Trying to send messages to a non-open socket. Clearing this interval.')
       clearInterval(refreshLoop)
     }
-  }, 200)
+  }, 40)
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
   });
