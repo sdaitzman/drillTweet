@@ -21,8 +21,8 @@ void serverConnect() {
     Serial.println("Connected to server. Attempting handshake...");
     serverHandshake();
   } else {
-    Serial.println("Connection to server failed. Trying again in 5 seconds...");
-    delay(5000);
+    Serial.println("Connection to server failed. Trying again after a pause...");
+    delay(1000);
     serverConnect();
   }
 }
