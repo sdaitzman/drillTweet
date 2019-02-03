@@ -45,7 +45,7 @@ void serverConnect() {
     wifiConnect();
   }
   // Connect to the websocket server
-  if (client.connect(host, 8080)) {
+  if (client.connect(host, port)) {
     Serial.println("Connected to server. Attempting handshake...");
     serverHandshake();
   } else {
@@ -56,6 +56,7 @@ void serverConnect() {
 }
 
 void serverHandshake() {
+  delay(10);
   // Handshake with the server
   webSocketClient.path = path;
   webSocketClient.host = host;

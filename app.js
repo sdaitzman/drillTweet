@@ -14,8 +14,9 @@ const io = require('socket.io')(server)
 let port
 let reading
 
+console.log('Start')
 
-const wss = new WebSocket.Server({ port: 8080 })
+const wss = new WebSocket.Server({ port: 8888 })
 
 wss.on('connection', function connection(ws) {
   console.log('New Connection')

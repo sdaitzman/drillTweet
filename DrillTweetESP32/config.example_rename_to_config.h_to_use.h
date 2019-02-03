@@ -8,3 +8,6 @@ char host[] = "192.168.XXX.XXX";
 
 // you probably do not need to change these values
 char path[] = "/";
+
+// port to connect to WebSockets Server
+int port = 8888;
